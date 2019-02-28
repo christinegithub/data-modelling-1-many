@@ -1,0 +1,164 @@
+1. Find the author with the name 'Kara Melton' and then select all the articles she has written.
+
+one_to_many_assignment=# SELECT title FROM articles WHERE author_id = (SELECT id FROM authors WHERE name =
+'Kara Melton')                                                                         ;
+                                              title
+--------------------------------------------------------------------------------------------------
+ How Tech Business Models Come From Marginalized Communities, But Startups Are Still Mostly White
+ Confronting the Assumption of Whiteness in Virtual Spaces
+(2 rows)
+
+2. Find Ontario in the provinces table and then find all the cities in that province.
+
+one_to_many_assignment=# SELECT name FROM cities WHERE province_id = (SELECT id FROM provinces
+WHERE name = 'Ontario');
+  name
+---------
+ Toronto
+ Ottawa
+(2 rows)
+
+3. Who wrote the article called 'Coding Bootcamps and Emotional Labor'?
+
+one_to_many_assignment=# SELECT author_id FROM articles WHERE title = 'Coding Bootcamps and Emotional Labor';
+ author_id
+-----------
+         4
+(1 row)
+
+one_to_many_assignment=# SELECT name FROM authors WHERE id = 4;
+       name
+-------------------
+ Tilde Ann Thurium
+(1 row)
+
+4. Write a series of SQL queries to find out how many provinces are in Canada.
+
+one_to_many_assignment=# SELECT id FROM countries WHERE name = 'Canada';
+ id
+----
+  1
+(1 row)
+
+one_to_many_assignment=# SELECT COUNT(name) FROM provinces WHERE country_id = 1;
+ count
+-------
+    14
+(1 row)
+
+5. How many people live at 4740 McDermott Street?
+
+one_to_many_assignment=# SELECT id FROM residences WHERE address = '4740 McDermott Street';
+ id
+----
+  9
+(1 row)
+
+one_to_many_assignment=# \d persons
+                                       Table "public.persons"
+    Column    |          Type          | Collation | Nullable |               Default
+--------------+------------------------+-----------+----------+-------------------------------------
+ id           | integer                |           | not null | nextval('persons_id_seq'::regclass)
+ name         | character varying(255) |           |          |
+ age          | integer                |           |          |
+ residence_id | integer                |           |          |
+Indexes:
+    "persons_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "persons_residence_id_fkey" FOREIGN KEY (residence_id) REFERENCES residences(id)
+
+one_to_many_assignment=# SELECT COUNT(name) FROM persons WHERE residence_id = 9;
+ count
+-------
+     2
+(1 row)
+
+6. What city is 4740 McDermott Street in?
+
+one_to_many_assignment=# SELECT city_id FROM residences WHERE address = '4740 McDermott Street';
+ city_id
+---------
+      11
+(1 row)
+
+one_to_many_assignment=# SELECT name FROM cities WHERE id = 11;
+  name
+--------
+ Ottawa
+(1 row)
+
+7. What province is 4740 McDermott Street in?
+
+one_to_many_assignment=# SELECT province_id FROM cities WHERE name = 'Ottawa';
+ province_id
+-------------
+          14
+(1 row)
+
+one_to_many_assignment=# SELECT name FROM provinces WHERE id = 14;
+  name
+---------
+ Ontario
+(1 row)
+
+8. What country is 4740 McDermott Street in?
+
+one_to_many_assignment=# SELECT country_id FROM provinces WHERE name = 'Ontario';
+ country_id
+------------
+          1
+(1 row)
+
+one_to_many_assignment=# SELECT name FROM countries WHERE id = 1;
+  name
+--------
+ Canada
+(1 row)
+
+9. Find the person named 'Destini Davis' and then use a series of SQL queries
+to find what country they live in.
+
+one_to_many_assignment=# SELECT residence_id FROM persons WHERE name = 'Destini Davis';
+ residence_id
+--------------
+            2
+(1 row)
+
+one_to_many_assignment=# SELECT city_id FROM residences WHERE id = 2;
+ city_id
+---------
+       8
+(1 row)
+
+one_to_many_assignment=# SELECT province_id FROM cities WHERE id = 8;
+ province_id
+-------------
+          14
+(1 row)
+
+one_to_many_assignment=# SELECT country_id FROM provinces WHERE id = 14;
+ country_id
+------------
+          1
+(1 row)
+
+one_to_many_assignment=# SELECT name FROM countries WHERE id = 1;
+  name
+--------
+ Canada
+(1 row)
+
+
+10. How many articles has Aditya Mukerjee written?
+
+one_to_many_assignment=# SELECT id FROM authors WHERE name = 'Aditya Mukerjee';
+ id
+----
+  2
+(1 row)
+
+one_to_many_assignment=# SELECT COUNT(title) FROM articles WHERE author_id = 2;
+ count
+-------
+     1
+(1 row)
